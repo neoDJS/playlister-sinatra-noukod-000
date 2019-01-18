@@ -45,7 +45,6 @@ class SongsController < ApplicationController
       params[:song]["genre_ids"] = []
     end
     #######
-    puts params[:song]
     @song = Song.find_by_slug(params[:slug])
     @song.update(params["song"])
 
@@ -53,7 +52,7 @@ class SongsController < ApplicationController
       @song.genres << Genre.create(name: params["genre"]["name"])
     end
 
-    @song.artist = Artist.find_or_create_by(params["artist"])
+    @song.artist = Artist.find_or_create_by(params["artist"]) if !params["artist"][:name].empty?
     @song.save
 
     flash[:message] = "Successfully updated song."
